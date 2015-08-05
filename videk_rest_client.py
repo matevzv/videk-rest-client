@@ -16,7 +16,7 @@ class Videk:
         self.headers = {'Content-Type': 'application/json', 'Authorization': token}
 
     def createCluster(self, clusterName):
-        json_str = '''{ "title": "''' + clusterName + '''", "id": "''' + clusterName + '''", "tag": null, "type": "none",
+        json_str = '''{ "name": "''' + clusterName + '''", "id": "''' + clusterName + '''", "tag": null, "type": "none",
          "URL": null, "scan" : "false", "comment":""  }'''
         r = requests.post(self.api_url + self.clusters_url, data=json_str, headers=self.headers)
         print r.text
