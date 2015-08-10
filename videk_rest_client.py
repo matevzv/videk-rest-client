@@ -28,7 +28,6 @@ class Videk:
         except requests.exceptions.RequestException as e:
             print e
 
-
     def getClusterID(self, clusterName):
         try:
             r = requests.get(self.api_url + self.clusters_url + "?name=" + clusterName, headers=self.headers)
@@ -146,7 +145,7 @@ class Videk:
 
     def serverOn(self):
         try:
-            response=urllib2.urlopen('https://www.e-osu.si', timeout=1)
+            response = urllib2.urlopen('https://www.e-osu.si', timeout=1)
             return True
         except urllib2.URLError as err: pass
         return False
