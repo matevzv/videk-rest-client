@@ -17,16 +17,16 @@ class Videk:
         self.headers = {'Content-Type': 'application/json', 'Authorization': token}
 
     def createCluster(self, clusterName):
+        json_str = '''{ "name": "''' + clusterName + '''", "id": "''' + clusterName + '''", "tag": null, "type": "none",
+        "URL": null, "scan" : "false", "comment":""  }'''
         try:
-            json_str = '''{ "name": "''' + clusterName + '''", "id": "''' + clusterName + '''", "tag": null, "type": "none",
-            "URL": null, "scan" : "false", "comment":""  }'''
             r = requests.post(self.api_url + self.clusters_url, data=json_str, headers=self.headers)
             print r.text
             if "error" in r.text:
                 print "Error: Cluster with the name " + clusterName + " already exists"
                 sys.exit()
-        except:
-            pass
+        except requests.exceptions.RequestException as e:
+            print e
 
 
     def getClusterID(self, clusterName):
@@ -37,8 +37,8 @@ class Videk:
                 print "Error: Cluster with the name " + clusterName + " not found"
             else:
                 return cluster_id[0]['id']
-        except:
-            pass
+        except requests.exceptions.RequestException as e:
+            print e
 
     def getClusterName(self, clusterID):
         try:
@@ -48,8 +48,8 @@ class Videk:
                 print "Error: Cluster with the id " + clusterID + " not found"
             else:
                 return cluster_name[0]['name']
-        except:
-            pass
+        except requests.exceptions.RequestException as e:
+            print e
 
     def createNode(self, nodeName, clusterID):
         try:
@@ -66,8 +66,8 @@ class Videk:
                 if "error" in r.text:
                     print "Error: Node with the name  " + nodeName + " already exists"
                     sys.exit()
-        except:
-            pass
+        except requests.exceptions.RequestException as e:
+            print e
 
     def getNodeID(self, nodeName):
         try:
@@ -77,8 +77,8 @@ class Videk:
                 print "Error: Node with the name " + nodeName + " not found"
             else:
                 return node_id[0]['id']
-        except:
-            pass
+        except requests.exceptions.RequestException as e:
+            print e
 
     def getNodeName(self, nodeID):
         try:
@@ -88,8 +88,8 @@ class Videk:
                 print "Error: Node with the id " + nodeID + " not found"
             else:
                 return node_name[0]['name']
-        except:
-            pass
+        except requests.exceptions.RequestException as e:
+            print e
 
     def createSensor(self, nodeID, sensorType, sensorQuantity, sensorUnit):
         try:
@@ -105,8 +105,8 @@ class Videk:
                 print r.text
             else:
                 print "Sensor already exists"
-        except:
-            pass
+        except requests.exceptions.RequestException as e:
+            print e
 
     def getSensorID(self, nodeName, sensorType, sensorQuantity):
         try:
@@ -119,8 +119,8 @@ class Videk:
                 print "No sensors found"
             else:
                 return sensor_id
-        except:
-            pass
+        except requests.exceptions.RequestException as e:
+            print e
 
     def uploadMesurements(self, mesurements, nodeID, sensorID):
         try:
@@ -141,8 +141,8 @@ class Videk:
                 preparedData.append(data)
             r = requests.post(self.api_url+self.measurements_url, data=json.dumps(preparedData), headers=self.headers)
             print r.text
-        except:
-            pass
+        except requests.exceptions.RequestException as e:
+            print e
 
     def serverOn(self):
         try:
