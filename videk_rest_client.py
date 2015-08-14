@@ -143,6 +143,46 @@ class Videk:
         except requests.exceptions.RequestException as e:
             print e
 
+    def deleteCluster(self, clusterName):
+        try:
+            r = requests.get(self.api_url + self.clusters_url + "?name=" + clusterName, headers=self.headers)
+            data = r.json()
+            if len(data) == 0:
+                print "No sensors found."
+            else:
+                cluster_id = data[0]['_id']
+                r = requests.delete(self.api_url + self.clusters_url + "/" + str(cluster_id), headers=self.headers)
+                print r.text
+        except requests.exceptions.RequestException as e:
+            print e
+
+    def deleteNode(self, nodeName):
+        try:
+            r = requests.get(self.api_url + self.nodes_url + "?name=" + nodeName, headers=self.headers)
+            data = r.json()
+            if "No nodes found." in data:
+                print data
+            else:
+                node_id = data[0]['_id']
+                r = requests.delete(self.api_url + self.nodes_url + "/" + str(node_id), headers=self.headers)
+                print r.text
+        except requests.exceptions.RequestException as e:
+            print e
+
+    def deleteSensor(self, nodeID, sensorType, sensorQuantity):
+        try:
+            sensor_id = str(nodeID) + "-" + sensorType + "-" + sensorQuantity
+            r = requests.get(self.api_url + self.sensors_url + "?id=" + sensor_id, headers=self.headers)
+            if "No sensors found" in r.text:
+                print r.text
+            else:
+                data = r.json()
+                node_id = data[0]['_id']
+                r = requests.delete(self.api_url + self.sensors_url + "/" + str(node_id), headers=self.headers)
+                print r.text
+        except requests.exceptions.RequestException as e:
+            print e
+
     def serverOn(self):
         try:
             response = urllib2.urlopen('https://www.e-osu.si', timeout=1)

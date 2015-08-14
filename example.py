@@ -34,3 +34,9 @@ while True:
 
     x.uploadMesurements(preparedData, node_id, sensor_id)
     time.sleep(10)
+
+#DELETE COMPONENTS
+
+#x.deleteSensor(node_id, 'sensorType', 'sensorQuantity')
+#x.deleteNode('nodeName')
+#x.deleteCluster('clusterName')
