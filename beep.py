@@ -3,7 +3,6 @@ import json
 
 class Beep:
     url = "http://ec2-54-235-125-114.compute-1.amazonaws.com/bees/lastMeasurementByNode?name="
-    nodeName = ""
 
     def __init__(self, nodeName):
         self.nodeName = nodeName

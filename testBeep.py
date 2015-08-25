@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from beep import Beep
 
 nodeName = "1401003"
