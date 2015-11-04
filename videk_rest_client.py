@@ -4,13 +4,13 @@ import json
 import urllib2
 
 class Videk:
-    api_url = "https://www.e-osu.si/api"
+    api_url = "http://194.249.173.73:11087/api"
     nodes_url = "/nodes"
     sensors_url = "/sensors"
     clusters_url = "/clusters"
     measurements_url = "/measurements"
     token = ""
-    headers = {'Content-Type': 'application/json', 'Authorization': ''}
+    headers = {'Content-Type': 'application/json', 'Authorization': '6xSRlvt3PWPLvuQwVdy2gbclsJ3OsjM9'}
 
     def __init__(self, token):
         self.token = token

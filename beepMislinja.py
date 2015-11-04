@@ -7,7 +7,7 @@ from datetime import datetime
 from videk_rest_client import Videk
 from beep import Beep
 
-x = Videk('nRmU1rIiTETP4brIPkKr+SO/uumG5kzR')
+x = Videk('6xSRlvt3PWPLvuQwVdy2gbclsJ3OsjM9')
 
 #x.createCluster('Beep')
 cluster_id = x.getClusterID('Beep')
