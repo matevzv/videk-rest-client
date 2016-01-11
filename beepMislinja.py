@@ -9,24 +9,45 @@ from beep import Beep
 
 x = Videk('nRmU1rIiTETP4brIPkKr+SO/uumG5kzR')
 
-#x.createCluster('Beep')
-cluster_id = x.getClusterID('Beep')
+cluster = "beep";
+node = "beepMislinja"
+sensor_t = "beep"
+sensor_q1 = "voltage"
+sensor_u1 = "mV"
+sensor_q2 = "signal"
+sensor_u2 = "dBm"
+sensor_q3 = "weight"
+sensor_u3 = "g"
 
-#x.createNode('BeepMislinja', cluster_id)
-node_id = x.getNodeID('BeepMislinja')
+cluster_id = x.getClusterID(cluster)
+if cluster_id == None:
+    x.createCluster(cluster)
+    cluster_id = x.getClusterID(cluster)
 
-#x.createSensor(node_id, 'beep', 'voltage', 'mV')
-sensor_id_v = x.getSensorID('BeepMislinja', 'beep', 'voltage')
+node_id = x.getNodeID(node)
+if node_id == None:
+    x.createNode(node, cluster_id)
+    node_id = x.getNodeID(node)
 
-#x.createSensor(node_id, 'beep', 'signal', 'dBm')
-sensor_id_s = x.getSensorID('BeepMislinja', 'beep', 'signal')
+sensor_id_v = x.getSensorID(node, sensor_t, sensor_q1)
+if sensor_id_v == None:
+    x.createSensor(node_id, sensor_t, sensor_q1, sensor_u1)
+    sensor_id_v = x.getSensorID(node, sensor_t, sensor_q1)
 
-#x.createSensor(node_id, 'beep', 'weight', 'g')
-sensor_id_w = x.getSensorID('BeepMislinja', 'beep', 'weight')
+sensor_id_s = x.getSensorID(node, sensor_t, sensor_q2)
+if sensor_id_s == None:
+    x.createSensor(node_id, sensor_t, sensor_q2, sensor_u2)
+    sensor_id_s = x.getSensorID(node, sensor_t, sensor_q2)
+
+sensor_id_w = x.getSensorID(node, sensor_t, sensor_q3)
+if sensor_id_w == None:
+    x.createSensor(node_id, sensor_t, sensor_q3, sensor_u3)
+    sensor_id_w = x.getSensorID(node, sensor_t, sensor_q3)
 
 nodeName = "1401003"
 beep = Beep(nodeName)
-measurement = '''{"latitude": 99.999999 , "longitude": 99.999999 ,"ts": "2014-07-24T15:14:30.850Z","value": 0 }'''
+measurement = '''{"latitude":"","longitude":"","ts":"","value":""}'''
+
 while True:
     try:
         v = beep.getBatteryVoltage()

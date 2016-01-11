@@ -4,7 +4,7 @@ import json
 import urllib2
 
 class Videk:
-    api_url = "https://www.e-osu.si/api"
+    api_url = "http://localhost:3000/api"
     nodes_url = "/nodes"
     sensors_url = "/sensors"
     clusters_url = "/clusters"
@@ -72,7 +72,7 @@ class Videk:
         try:
             r = requests.get(self.api_url + self.nodes_url + "?name=" + nodeName, headers=self.headers)
             node_id = r.json()
-            if len(node_id) == 0:
+            if len(node_id) == 15:
                 print "Error: Node with the name " + nodeName + " not found"
             else:
                 return node_id[0]['id']
