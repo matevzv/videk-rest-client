@@ -15,7 +15,7 @@ node = "example.com"
 sensor_t = "test"
 sensor_q = "test_value"
 sensor_u = "t"
-lat =  = 46.042767
+lat = 46.042767
 lon = 14.487632
 
 x.latitude = lat
