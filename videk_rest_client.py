@@ -58,8 +58,8 @@ class Videk:
             clusterName = self.getClusterName(clusterID)
             r = requests.get(self.api_url + self.nodes_url + "?name=" + nodeName, headers=self.headers)
             if "No nodes found" in r.text:
-                json_str = '''{ "name": "''' + nodeName + '''", loc_lat": ''' + latitude + ''',
-                "loc_lon": ''' + longitude + ''', "cluster": "''' + str(clusterID) + '''",
+                json_str = '''{ "name": "''' + nodeName + '''", loc_lat": ''' + str(latitude) + ''',
+                "loc_lon": ''' + str(longitude) + ''', "cluster": "''' + str(clusterID) + '''",
                 "cluster_name": "''' + clusterName + '''", "status": "active", "components": [] }'''
                 r = requests.post(self.api_url + self.nodes_url, data=json_str, headers=self.headers)
                 print r.text
