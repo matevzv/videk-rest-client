@@ -4,8 +4,8 @@ import json
 import urllib2
 
 class Videk:
-    server_url = "http://localhost:3000"
-    api_url = server_url + "/api"
+    url = "http://localhost:3000"
+    api_url = url + "/api"
     nodes_url = "/nodes"
     sensors_url = "/sensors"
     clusters_url = "/clusters"
@@ -15,7 +15,8 @@ class Videk:
     token = ""
     headers = {'Content-Type': 'application/json', 'Authorization': ''}
 
-    def __init__(self, token):
+    def __init__(self, url, token):
+        self.url = url
         self.token = token
         self.headers = {'Content-Type': 'application/json', 'Authorization': token}
 

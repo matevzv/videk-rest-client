@@ -7,8 +7,7 @@ from datetime import datetime
 from videk_rest_client import Videk
 from random import randint
 
-x = Videk('secret')
-x.api_url = "http://localhost/api"
+x = Videk('url', 'secret')
 
 cluster = "example";
 node = "example.com"
