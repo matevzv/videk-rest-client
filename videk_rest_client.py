@@ -4,11 +4,14 @@ import json
 import urllib2
 
 class Videk:
-    api_url = "http://localhost:3000/api"
+    server_url = "http://localhost:3000"
+    api_url = server_url + "/api"
     nodes_url = "/nodes"
     sensors_url = "/sensors"
     clusters_url = "/clusters"
     measurements_url = "/measurements"
+    latitude = null
+    longitude = null
     token = ""
     headers = {'Content-Type': 'application/json', 'Authorization': ''}
 
@@ -55,11 +58,9 @@ class Videk:
             clusterName = self.getClusterName(clusterID)
             r = requests.get(self.api_url + self.nodes_url + "?name=" + nodeName, headers=self.headers)
             if "No nodes found" in r.text:
-                json_str = '''{ "name": "''' + nodeName + '''", "location": "", "loc_lat": null, "loc_lon": null,
-                 "cluster": "''' + str(clusterID) + '''", "cluster_name": "''' + clusterName + '''", "status": "active",
-                 "setup": "", "scope": "", "project": "", "user_comment": "", "box_label": "", "serial_no": "", "mac": "",
-                 "network_addr": null, "network_addr2"  : null, "firmware": "", "bootloader": "", "role": "device", "sensors":
-                 [], "components": [] }'''
+                json_str = '''{ "name": "''' + nodeName + '''", loc_lat": ''' + latitude + ''',
+                "loc_lon": ''' + longitude + ''', "cluster": "''' + str(clusterID) + '''",
+                "cluster_name": "''' + clusterName + '''", "status": "active", "components": [] }'''
                 r = requests.post(self.api_url + self.nodes_url, data=json_str, headers=self.headers)
                 print r.text
                 if "error" in r.text:
@@ -185,7 +186,7 @@ class Videk:
 
     def serverOn(self):
         try:
-            response = urllib2.urlopen('https://www.e-osu.si', timeout=1)
+            response = urllib2.urlopen(server_url, timeout=1)
             return True
         except urllib2.URLError as err: pass
         return False
