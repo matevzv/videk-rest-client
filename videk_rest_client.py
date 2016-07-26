@@ -187,7 +187,7 @@ class Videk:
 
     def serverOn(self):
         try:
-            response = urllib2.urlopen(server_url, timeout=1)
+            response = urllib2.urlopen(url, timeout=1)
             return True
         except urllib2.URLError as err: pass
         return False
