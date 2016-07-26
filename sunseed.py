@@ -19,7 +19,7 @@ lat = 46.042767
 lon = 14.487632
 
 x.latitude = lat
-x.latitude = lon
+x.longitude = lon
 
 cluster_id = x.getClusterID(cluster)
 if cluster_id == None:
