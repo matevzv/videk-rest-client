@@ -10,8 +10,8 @@ class Videk:
     sensors_url = "/sensors"
     clusters_url = "/clusters"
     measurements_url = "/measurements"
-    latitude = null
-    longitude = null
+    latitude = "null"
+    longitude = "null"
     token = ""
     headers = {'Content-Type': 'application/json', 'Authorization': ''}
 
