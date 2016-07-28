@@ -1,7 +1,6 @@
 import sys
 import requests
 import json
-import urllib2
 
 class Videk:
     url = "http://localhost:3000"
@@ -186,9 +185,13 @@ class Videk:
         except requests.exceptions.RequestException as e:
             print e
 
-    def serverOn(self):
+    def serverOnline(self):
         try:
-            response = urllib2.urlopen(url, timeout=1)
+            request = requests.get(self.url)
+        except:
+            return False
+            pass
+        if request.status_code == 200:
             return True
-        except urllib2.URLError as err: pass
-        return False
+        else:
+            return False

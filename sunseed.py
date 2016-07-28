@@ -6,7 +6,7 @@ from videk_rest_client import Videk
 
 videk = Videk("address", "secret")
 
-if videk.serverOn:
+if videk.serverOnline():
     print "Videk server is online ..."
 else:
     print "Videk server is offline ..."
