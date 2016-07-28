@@ -7,9 +7,9 @@ from videk_rest_client import Videk
 videk = Videk("address", "secret")
 
 if videk.serverOn:
-    echo "Videk server is online ..."
+    print "Videk server is online ..."
 else:
-    echo "Videk server is offline ..."
+    print "Videk server is offline ..."
     sys.exit(1)
 
 node = "node-name"
