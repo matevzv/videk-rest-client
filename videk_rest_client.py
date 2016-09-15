@@ -70,6 +70,23 @@ class Videk:
         except requests.exceptions.RequestException as e:
             print e
 
+    def modifyNode(self, nodeName, key, value):
+        modData = { key: value }
+        try:
+            r = requests.get(self.api_url + self.nodes_url + "?id=" + nodeName, headers=self.headers)
+            res = r.json()
+            if "No nodes found." in res:
+                print res
+            else:
+                node_id = res[0]['_id']
+                r = requests.put(self.api_url + self.nodes_url + "/" + str(node_id), data=json.dumps(modData), headers=self.headers)
+                print r.text
+        except requests.exceptions.RequestException as e:
+            print e
+
+    def addNodeExtraField(self, nodeName, fieldName, fieldValue):
+        self.modifyNode(str(nodeName), "extra_fields", { fieldName: fieldValue })
+
     def getNodeID(self, nodeName):
         try:
             r = requests.get(self.api_url + self.nodes_url + "?name=" + nodeName, headers=self.headers)
