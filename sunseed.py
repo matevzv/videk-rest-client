@@ -16,6 +16,7 @@ node = "node-name"
 cluster = "cluster-name"
 lat = 46.042767
 lon = 14.487632
+hw_id = open("/etc/machine-id", "r").readline().rstrip()
 
 videk.latitude = lat
 videk.longitude = lon
@@ -29,3 +30,4 @@ node_id = videk.getNodeID(node)
 if node_id == None:
     videk.createNode(node, cluster_id)
     node_id = videk.getNodeID(node)
+    videk.addNodeExtraField(node_id, "HW_ID", hw_id)
