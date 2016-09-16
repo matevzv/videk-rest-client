@@ -16,7 +16,7 @@ node = "node-name"
 cluster = "cluster-name"
 lat = 46.042767
 lon = 14.487632
-hw_id = open("/etc/machine-id", "r").readline().rstrip()
+hw_id = open("/etc/machine-id", "r").readline().strip()
 
 videk.latitude = lat
 videk.longitude = lon
