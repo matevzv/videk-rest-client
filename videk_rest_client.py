@@ -73,7 +73,7 @@ class Videk:
     def modifyNode(self, nodeName, key, value):
         modData = { key: value }
         try:
-            r = requests.get(self.api_url + self.nodes_url + "?id=" + nodeName, headers=self.headers)
+            r = requests.get(self.api_url + self.nodes_url + "?id=" + str(nodeName), headers=self.headers)
             res = r.json()
             if "No nodes found." in res:
                 print res
@@ -85,7 +85,7 @@ class Videk:
             print e
 
     def addNodeExtraField(self, nodeName, fieldName, fieldValue):
-        self.modifyNode(str(nodeName), "extra_fields", { fieldName: fieldValue })
+        self.modifyNode(nodeName, "extra_fields", { fieldName: fieldValue })
 
     def getNodeID(self, nodeName):
         try:
