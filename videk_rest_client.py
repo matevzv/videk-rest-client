@@ -98,6 +98,19 @@ class Videk:
         except requests.exceptions.RequestException as e:
             print e
 
+    def getNodeLocation(self, nodeName):
+        try:
+            r = requests.get(self.api_url + self.nodes_url + "?name=" + nodeName, headers=self.headers)
+            node_id = r.json()
+            if len(node_id) == 15:
+                print "Error: Node with the name " + nodeName + " not found"
+            else:
+                node_id = node_id[0]['_id']
+                node = requests.get(self.api_url + self.nodes_url + "/" + str(node_id), headers=self.headers).json()
+                return { "latitude": float(node[0]['loc_lat']), "longitude": float(node[0]['loc_lon']) }
+        except requests.exceptions.RequestException as e:
+            print e
+
     def getNodeName(self, nodeID):
         try:
             r = requests.get(self.api_url + self.nodes_url + "?id=" + nodeID, headers=self.headers)
