@@ -8,7 +8,7 @@ import os.path
 from datetime import datetime
 from videk_rest_client import Videk
 
-videk = Videk("http://localhost:3000", "vMrr4jELLU1vxL9SdY63qJtlEZq42ykz")
+videk = Videk("http://localhost:3000", "secret")
 node = "node-name"
 cluster = "cluster-name"
 lat = 46.042767
@@ -60,7 +60,6 @@ if node_id == None:
     videk.addNodeExtraField(node_id, "HW_ID", hw_id)
 else:
     lat_lon = videk.getNodeLocation(node)
-    print lat_lon
     if lat != lat_lon['latitude'] or lon != lat_lon['longitude']:
         lat = lat_lon['latitude']
         lon = lat_lon['longitude']
