@@ -8,7 +8,7 @@ import os.path
 from datetime import datetime
 from videk_rest_client import Videk
 
-videk = Videk("address", "secret")
+videk = Videk("http://localhost:3000", "vMrr4jELLU1vxL9SdY63qJtlEZq42ykz")
 node = "node-name"
 cluster = "cluster-name"
 lat = 46.042767
@@ -23,8 +23,6 @@ def uploadSensors(sensor_type, sensors):
                 sensor['unit'])
             sensor_id = videk.getSensorID(node, sensor_type, sensor['name'])
 
-            print sensor['name']
-        print sensor_id
         measurement = '''{"latitude":"","longitude":"","ts":"","value":""}'''
         v = sensor['value']
         preparedData = []
