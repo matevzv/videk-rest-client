@@ -70,7 +70,20 @@ class Videk:
         except requests.exceptions.RequestException as e:
             print e
 
-    def modifyNode(self, nodeName, key, value):
+    def updateNode(self, node_id, nodeModel):
+        try:
+            r = requests.get(self.api_url + self.nodes_url + "?id=" + str(node_id), headers=self.headers)
+            res = r.json()
+            if "No nodes found." in res:
+                print res
+            else:
+                node_id = res[0]['_id']
+                r = requests.put(self.api_url + self.nodes_url + "/" + str(node_id), data=json.dumps(nodeModel), headers=self.headers)
+                print r.text
+        except requests.exceptions.RequestException as e:
+            print e
+
+    def updateSingleNodeParam(self, nodeName, key, value):
         modData = { key: value }
         try:
             r = requests.get(self.api_url + self.nodes_url + "?id=" + str(nodeName), headers=self.headers)
@@ -85,7 +98,7 @@ class Videk:
             print e
 
     def addNodeExtraField(self, nodeName, fieldName, fieldValue):
-        self.modifyNode(nodeName, "extra_fields", { fieldName: fieldValue })
+        self.updateSingleNodeParam(nodeName, "extra_fields", { fieldName: fieldValue })
 
     def getNodeID(self, nodeName):
         try:
@@ -95,6 +108,28 @@ class Videk:
                 print "Error: Node with the name " + nodeName + " not found"
             else:
                 return node_id[0]['id']
+        except requests.exceptions.RequestException as e:
+            print e
+
+    def getNodeByHardwareId(self, id):
+        try:
+            r = requests.get(self.api_url + self.nodes_url + "?machine_id=" + id, headers=self.headers)
+            node = r.json()
+            if len(node) == 15:
+                print "Error: Node with the machine ID " + id + " not found"
+            else:
+                return node[0]
+        except requests.exceptions.RequestException as e:
+            print e
+
+    def getNode(self, id):
+        try:
+            r = requests.get(self.api_url + self.nodes_url + "?name=" + id, headers=self.headers)
+            node = r.json()
+            if len(node) == 15:
+                print "Error: Node with the machine ID " + id + " not found"
+            else:
+                return node[0]
         except requests.exceptions.RequestException as e:
             print e
 
