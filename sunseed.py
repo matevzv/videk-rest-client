@@ -14,6 +14,7 @@ cluster = "cluster-name"
 lat = 46.042767
 lon = 14.487632
 machine_id = open("/etc/machine-id", "r").readline().strip()
+mac = open('/sys/class/net/eth0/address').read()
 
 def uploadSensors(node_id, sensor_type, sensors):
     for sensor in sensors:
@@ -60,6 +61,7 @@ if node_id_by_node_name == None and node_id_by_node_machine_id == None:
     videk.createNode(node, cluster_id)
     node_id = videk.getNodeID(node)
     videk.updateSingleNodeParam(node_id, "machine_id", machine_id)
+    videk.addNodeExtraField(node_id, "MAC", mac)
     node_model = videk.getNode(node)
 elif node_id_by_node_name == None and node_id_by_node_machine_id != None:
     node_model = videk.getNodeByHardwareId(machine_id)
