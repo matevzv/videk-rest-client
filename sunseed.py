@@ -9,11 +9,11 @@ from datetime import datetime
 from videk_rest_client import Videk
 
 videk = Videk("http://localhost:3000", "secret")
-node = "node-name"
-cluster = "cluster-name"
+node = socket.gethostname()
+cluster = node[:node.rfind("-")]
 lat = 46.042767
 lon = 14.487632
-machine_id = open("/etc/machine-id", "r").readline().strip()
+machine_id = open('/etc/machine-id').readline().strip()
 mac = open('/sys/class/net/eth0/address').read()
 
 def uploadSensors(node_id, sensor_type, sensors):
