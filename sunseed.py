@@ -102,4 +102,4 @@ elif os.path.isfile(spm_file_name):
     spm = json.loads(spm)
     uploadSensors(node_model['id'], "spm", spm)
 else:
-    sys.exit(1)
+    print "No sensors found!"
