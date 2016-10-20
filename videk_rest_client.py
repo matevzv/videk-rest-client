@@ -98,7 +98,13 @@ class Videk:
             print e
 
     def addNodeExtraField(self, nodeName, fieldName, fieldValue):
-        self.updateSingleNodeParam(nodeName, "extra_fields", { fieldName: fieldValue })
+        node_model = self.getNode(str(nodeName))
+        if 'extra_fields' in node_model:
+            node_model_update = node_model['extra_fields']
+            node_model_update.append({ fieldName: fieldValue })
+            self.updateSingleNodeParam(node_model['id'], "extra_fields", node_model_update)
+        else:
+            self.updateSingleNodeParam(node_model['id'], "extra_fields", [{ fieldName: fieldValue }])
 
     def getNodeID(self, nodeName):
         try:
@@ -114,10 +120,12 @@ class Videk:
     def getNodeByHardwareId(self, id):
         try:
             r = requests.get(self.api_url + self.nodes_url + "?machine_id=" + id, headers=self.headers)
-            node = r.json()
-            if len(node) == 15:
+            res = r.json()
+            if len(res) == 15:
                 print "Error: Node with the machine ID " + id + " not found"
             else:
+                node_id = res[0]['_id']
+                node = requests.get(self.api_url + self.nodes_url + "/" + str(node_id), headers=self.headers).json()
                 return node[0]
         except requests.exceptions.RequestException as e:
             print e
