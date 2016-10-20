@@ -14,7 +14,7 @@ cluster = node[:node.rfind("-")]
 lat = 46.042767
 lon = 14.487632
 machine_id = open('/etc/machine-id').readline().strip()
-mac = open('/sys/class/net/eth0/address').read()
+mac = open('/sys/class/net/eth0/address').read().strip()
 
 def uploadSensors(node_id, sensor_type, sensors):
     for sensor in sensors:
