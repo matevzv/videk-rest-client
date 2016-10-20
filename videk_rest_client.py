@@ -125,10 +125,12 @@ class Videk:
     def getNode(self, id):
         try:
             r = requests.get(self.api_url + self.nodes_url + "?name=" + id, headers=self.headers)
-            node = r.json()
-            if len(node) == 15:
+            res = r.json()
+            if len(res) == 15:
                 print "Error: Node with the machine ID " + id + " not found"
             else:
+                node_id = res[0]['_id']
+                node = requests.get(self.api_url + self.nodes_url + "/" + str(node_id), headers=self.headers).json()
                 return node[0]
         except requests.exceptions.RequestException as e:
             print e

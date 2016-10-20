@@ -8,13 +8,14 @@ import os.path
 from datetime import datetime
 from videk_rest_client import Videk
 
-videk = Videk("http://localhost:3000", "secret")
-node = socket.gethostname()
-cluster = node[:node.rfind("-")]
+videk = Videk("http://localhost:3000", "dEjdS28qKZ4exzjzxSdaHI6tzlfuAzFE")
+node = "node-name"
+cluster = "cluster-name"
 lat = 46.042767
 lon = 14.487632
 machine_id = open('/etc/machine-id').readline().strip()
-mac = open('/sys/class/net/eth0/address').read()
+mac = open('/sys/class/net/enx847beb5aad2a/address').read()
+sw_version = "1.1"
 
 def uploadSensors(node_id, sensor_type, sensors):
     for sensor in sensors:
@@ -62,6 +63,7 @@ if node_id_by_node_name == None and node_id_by_node_machine_id == None:
     node_id = videk.getNodeID(node)
     videk.updateSingleNodeParam(node_id, "machine_id", machine_id)
     videk.addNodeExtraField(node_id, "MAC", mac)
+    videk.addNodeExtraField(node_id, "Software", sw_version)
     node_model = videk.getNode(node)
 elif node_id_by_node_name == None and node_id_by_node_machine_id != None:
     node_model = videk.getNodeByHardwareId(machine_id)
@@ -85,6 +87,7 @@ elif node_id_by_node_name != None and node_id_by_node_machine_id == None:
         print "updated node machine_id"
 else:
     node_model = videk.getNode(node)
+    print node_model
 
 if node_model_update != None:
     videk.updateNode(node_model['id'], node_model_update)
