@@ -8,13 +8,13 @@ import os.path
 from datetime import datetime
 from videk_rest_client import Videk
 
-videk = Videk("http://localhost:3000", "secret")
+videk = Videk("http://localhost:3000", "dEjdS28qKZ4exzjzxSdaHI6tzlfuAzFE")
 node = socket.gethostname()
 cluster = node[:node.rfind("-")]
 lat = 46.042767
 lon = 14.487632
 machine_id = open('/etc/machine-id').readline().strip()
-mac = open('/sys/class/net/eth0/address').read().strip()
+mac = open('/sys/class/net/enx847beb5aad2a/address').read().strip()
 
 def uploadSensors(node_id, sensor_type, sensors):
     for sensor in sensors:
