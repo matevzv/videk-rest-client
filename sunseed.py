@@ -62,7 +62,7 @@ if node_id_by_node_name == None and node_id_by_node_machine_id == None:
     node_id = videk.getNodeID(node)
     videk.updateSingleNodeParam(node_id, "machine_id", machine_id)
     videk.addNodeExtraField(node, "MAC", mac)
-    #videk.addNodeExtraField(node, "Software", sw_version)
+    videk.addNodeExtraField(node, "Software", sw_version)
     node_model = videk.getNode(node)
 elif node_id_by_node_name == None and node_id_by_node_machine_id != None:
     node_model = videk.getNodeByHardwareId(machine_id)
@@ -87,6 +87,7 @@ else:
 
 extra_fields = {}
 update = False
+sw_exists = False
 extra_fields['extra_fields'] = []
 
 if type(node_model['extra_fields']) != list:
@@ -95,6 +96,7 @@ if type(node_model['extra_fields']) != list:
 
 for extra_field in node_model['extra_fields']:
     if 'Software' in extra_field:
+        sw_exists = True
         if extra_field['Software'] != sw_version:
             extra_fields['extra_fields'].append({'Software':sw_version})
             update = True
@@ -105,6 +107,10 @@ for extra_field in node_model['extra_fields']:
             update = True
             continue
     extra_fields['extra_fields'].append(extra_field)
+
+if not sw_exists:
+    extra_fields['extra_fields'].append({'Software':sw_version})
+    update = True
 
 if update:
     node_model_update['extra_fields'] = extra_fields['extra_fields']
