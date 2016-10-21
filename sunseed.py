@@ -3,6 +3,7 @@
 import sys
 import json
 import time
+import socket
 import os.path
 from datetime import datetime
 from videk_rest_client import Videk
