@@ -88,10 +88,11 @@ else:
 extra_fields = {}
 update = False
 extra_fields['extra_fields'] = []
-if type(node_model['extra_fields']) == list:
-    print "right"
-else:
-    print "wroooooooooooooong"
+
+if type(node_model['extra_fields']) != list:
+    node_model['extra_fields'] = [node_model['extra_fields']]
+    update = True
+
 for extra_field in node_model['extra_fields']:
     if 'Software' in extra_field:
         if extra_field['Software'] != sw_version:
