@@ -3,7 +3,6 @@
 import sys
 import json
 import time
-import socket
 import os.path
 from datetime import datetime
 from videk_rest_client import Videk
@@ -13,9 +12,9 @@ node = "node-name"
 cluster = "cluster-name"
 lat = 46.042767
 lon = 14.487632
-machine_id = open('/etc/machine-id').readline().strip() + "fsw"
-mac = open('/sys/class/net/enx847beb5aad2a/address').read()
-sw_version = "v0.4"
+machine_id = open('/etc/machine-id').readline().strip()
+mac = open('/sys/class/net/enx847beb5aad2a/address').read().strip()
+sw_version = "v1.0"
 
 def uploadSensors(node_id, sensor_type, sensors):
     for sensor in sensors:
@@ -78,24 +77,32 @@ elif node_id_by_node_name == None and node_id_by_node_machine_id != None:
         node_model_update['cluster_name'] = cluster
         print "updated node cluster"
 elif node_id_by_node_name != None and node_id_by_node_machine_id == None:
-    node_model = videk.getNode(node)
+    node_model = node_id_by_node_name
     if node_model['machine_id'] != machine_id:
         node_model['machine_id'] = machine_id
         node_model_update['machine_id'] = machine_id
         print "updated node machine_id"
 else:
-    node_model = videk.getNode(node)
+    node_model = node_id_by_node_name
 
-node_model_update['extra_fields'] = []
+extra_fields = {}
+update = False
+extra_fields['extra_fields'] = []
 for extra_field in node_model['extra_fields']:
     if 'Software' in extra_field:
         if extra_field['Software'] != sw_version:
-            node_model_update['extra_fields'].append({'Software':sw_version})
-        else:
-            node_model_update = {}
-            break
-    else:
-        node_model_update['extra_fields'].append(extra_field)
+            extra_fields['extra_fields'].append({'Software':sw_version})
+            update = True
+            continue
+    elif 'MAC' in extra_field:
+        if extra_field['MAC'] != mac:
+            extra_fields['extra_fields'].append({'MAC':mac})
+            update = True
+            continue
+    extra_fields['extra_fields'].append(extra_field)
+
+if update:
+    node_model_update['extra_fields'] = extra_fields['extra_fields']
 
 if len(node_model_update) != 0:
     videk.updateNode(node_model['id'], node_model_update)
