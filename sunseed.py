@@ -14,7 +14,8 @@ cluster = node[:node.rfind("-")]
 lat = 46.042767
 lon = 14.487632
 machine_id = open('/etc/machine-id').readline().strip()
-mac = open('/sys/class/net/enx847beb5aad2a/address').read().strip()
+mac = open('/sys/class/net/eth0/address').read().strip()
+sw_version = "v1.0"
 
 def uploadSensors(node_id, sensor_type, sensors):
     for sensor in sensors:
@@ -53,19 +54,19 @@ if cluster_id == None:
     videk.createCluster(cluster)
     cluster_id = videk.getClusterID(cluster)
 
-node_id_by_node_name = videk.getNodeID(node)
+node_id_by_node_name = videk.getNode(node)
 node_id_by_node_machine_id = videk.getNodeByHardwareId(machine_id);
-node_model_update = None
+node_model_update = {}
 
 if node_id_by_node_name == None and node_id_by_node_machine_id == None:
     videk.createNode(node, cluster_id)
     node_id = videk.getNodeID(node)
     videk.updateSingleNodeParam(node_id, "machine_id", machine_id)
-    videk.addNodeExtraField(node_id, "MAC", mac)
+    videk.addNodeExtraField(node, "MAC", mac)
+    videk.addNodeExtraField(node, "Software", sw_version)
     node_model = videk.getNode(node)
 elif node_id_by_node_name == None and node_id_by_node_machine_id != None:
     node_model = videk.getNodeByHardwareId(machine_id)
-    node_model_update = {}
     if node_model['name'] != node:
         node_model['name'] = node
         node_model_update['name'] = node
@@ -77,22 +78,57 @@ elif node_id_by_node_name == None and node_id_by_node_machine_id != None:
         node_model_update['cluster_name'] = cluster
         print "updated node cluster"
 elif node_id_by_node_name != None and node_id_by_node_machine_id == None:
-    node_model = videk.getNode(node)
-    node_model_update = {}
+    node_model = node_id_by_node_name
     if node_model['machine_id'] != machine_id:
         node_model['machine_id'] = machine_id
         node_model_update['machine_id'] = machine_id
         print "updated node machine_id"
 else:
-    node_model = videk.getNode(node)
+    node_model = node_id_by_node_name
 
-if node_model_update != None:
+extra_fields = {}
+update = False
+mac_exists = False
+sw_exists = False
+extra_fields['extra_fields'] = []
+
+if type(node_model['extra_fields']) != list:
+    node_model['extra_fields'] = [node_model['extra_fields']]
+    update = True
+
+for extra_field in node_model['extra_fields']:
+    if 'Software' in extra_field:
+        sw_exists = True
+        if extra_field['Software'] != sw_version:
+            extra_fields['extra_fields'].append({'Software':sw_version})
+            update = True
+            continue
+    elif 'MAC' in extra_field:
+        mac_exists = True
+        if extra_field['MAC'] != mac:
+            extra_fields['extra_fields'].append({'MAC':mac})
+            update = True
+            continue
+    extra_fields['extra_fields'].append(extra_field)
+
+if not mac_exists:
+    extra_fields['extra_fields'].append({'MAC':mac})
+    update = True
+
+if not sw_exists:
+    extra_fields['extra_fields'].append({'Software':sw_version})
+    update = True
+
+if update:
+    node_model_update['extra_fields'] = extra_fields['extra_fields']
+
+if len(node_model_update) != 0:
     videk.updateNode(node_model['id'], node_model_update)
     print "updated node model"
 
-if lat != node_model['latitude'] or lon != node_model['longitude']:
-    lat = node_model['latitude']
-    lon = node_model['longitude']
+if lat != float(node_model['loc_lat']) or lon != float(node_model['loc_lon']):
+    lat = node_model['loc_lat']
+    lon = node_model['loc_lon']
     print "updated node location"
 
 if os.path.isfile(pmc_file_name):
