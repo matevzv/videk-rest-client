@@ -88,6 +88,7 @@ else:
 
 extra_fields = {}
 update = False
+mac_exists = False
 sw_exists = False
 extra_fields['extra_fields'] = []
 
@@ -103,11 +104,16 @@ for extra_field in node_model['extra_fields']:
             update = True
             continue
     elif 'MAC' in extra_field:
+        mac_exists = True
         if extra_field['MAC'] != mac:
             extra_fields['extra_fields'].append({'MAC':mac})
             update = True
             continue
     extra_fields['extra_fields'].append(extra_field)
+
+if not mac_exists:
+    extra_fields['extra_fields'].append({'MAC':mac})
+    update = True
 
 if not sw_exists:
     extra_fields['extra_fields'].append({'Software':sw_version})
