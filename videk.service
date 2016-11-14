@@ -1,7 +1,7 @@
 [Unit]
 Description=Registers a new node
 Requires=set-hostname.service
-After=set-hostname.service edison-machine-id.service spm.service set-docker-storage.service
+After=set-hostname.service edison-machine-id.service set-docker-storage.service
 
 [Service]
 Type=oneshot
