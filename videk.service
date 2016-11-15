@@ -6,7 +6,7 @@ After=set-hostname.service edison-machine-id.service set-docker-storage.service
 [Service]
 Type=oneshot
 ExecStartPre=/bin/videk
-ExecStartPre=/bin/bash -c "while [ ! -f /tmp/spm-data or ! -f /tmp/pmc-data ]; do sleep 1; done"
+ExecStartPre=/bin/bash -c "while [[ ! -f /tmp/spm-data && ! -f /tmp/pmc-data ]]; do sleep 1; done"
 ExecStart=/bin/videk
 RemainAfterExit=yes
 
