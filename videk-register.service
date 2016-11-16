@@ -1,12 +1,12 @@
 [Unit]
-Description=Updates a node and sensors
+Description=Registers a new node
 Requires=set-hostname.service
 After=set-hostname.service edison-machine-id.service set-docker-storage.service
 
 [Service]
 Type=oneshot
 ExecStart=/bin/videk
-RemainAfterExit=yes
+ExecStartPost=/bin/systemctl disable videk-register
 
 [Install]
 WantedBy=basic.target
