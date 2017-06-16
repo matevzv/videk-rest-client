@@ -14,7 +14,6 @@ cluster = node[:node.rfind("-")]
 lat = 46.042767
 lon = 14.487632
 machine_id = open('/etc/machine-id').readline().strip()
-mac = open('/sys/class/net/eth0/address').read().strip()
 sw_version = "v1.0"
 
 def uploadSensors(node_id, sensor_type, sensors):
@@ -62,7 +61,6 @@ if node_id_by_node_name == None and node_id_by_node_machine_id == None:
     videk.createNode(node, cluster_id)
     node_id = videk.getNodeID(node)
     videk.updateSingleNodeParam(node_id, "machine_id", machine_id)
-    videk.addNodeExtraField(node, "MAC", mac)
     videk.addNodeExtraField(node, "Software", sw_version)
     node_model = videk.getNode(node)
 elif node_id_by_node_name == None and node_id_by_node_machine_id != None:
@@ -88,7 +86,6 @@ else:
 
 extra_fields = {}
 update = False
-mac_exists = False
 sw_exists = False
 extra_fields['extra_fields'] = []
 
@@ -103,17 +100,7 @@ for extra_field in node_model['extra_fields']:
             extra_fields['extra_fields'].append({'Software':sw_version})
             update = True
             continue
-    elif 'MAC' in extra_field:
-        mac_exists = True
-        if extra_field['MAC'] != mac:
-            extra_fields['extra_fields'].append({'MAC':mac})
-            update = True
-            continue
     extra_fields['extra_fields'].append(extra_field)
-
-if not mac_exists:
-    extra_fields['extra_fields'].append({'MAC':mac})
-    update = True
 
 if not sw_exists:
     extra_fields['extra_fields'].append({'Software':sw_version})
